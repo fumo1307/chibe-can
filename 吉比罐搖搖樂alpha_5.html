@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>吉比罐搖搖樂</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 30px;
+    }
+    .shake-area {
+      border: 2px dashed #aaa;
+      padding: 20px;
+      width: 300px;
+      margin: 0 auto 20px;
+    }
+    .container {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      position: relative;
+      background-image: url('./SAM_0714__67368.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform-origin: center bottom;
+      transition: transform 0.2s ease-out;
+    }
+    .ball {
+      width: 40px;
+      height: 40px;
+      background-image: url('./IMG_1928.png');
+      background-size: cover;
+      background-position: center;
+      position: absolute;
+      top: 0;
+      left: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h2>吉比罐搖搖樂</h2>
+  <div class="shake-area" tabindex="0" id="shakeArea">
+    <p>請使用 ↑ ↓ ← → 鍵搖晃吉比罐</p>
+    <div class="container" id="container">
+      <div class="ball" id="ball"></div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("container");
+    const ball = document.getElementById("ball");
+    const shakeArea = document.getElementById("shakeArea");
+
+    let velocityY = 0;
+    let positionY = 0;
+    let velocityX = 0;
+    let positionX = 80;
+    let gravity = 0.5;
+    let bounce = -0.7;
+    let tilt = 0;
+
+    // 球體物理模擬
+    setInterval(() => {
+      velocityY += gravity;
+      positionY += velocityY;
+      positionX += velocityX;
+
+      if (positionY > 160) {
+        positionY = 160;
+        velocityY *= bounce;
+      } else if (positionY < 0) {
+        positionY = 0;
+        velocityY *= bounce;
+      }
+
+      if (positionX < 0) {
+        positionX = 0;
+        velocityX *= bounce;
+      } else if (positionX > 160) {
+        positionX = 160;
+        velocityX *= bounce;
+      }
+
+      ball.style.top = positionY + "px";
+      ball.style.left = positionX + "px";
+    }, 30);
+
+    // 鍵盤控制
+    shakeArea.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        velocityY -= 5;
+      } else if (e.key === "ArrowDown") {
+        velocityY += 5;
+      } else if (e.key === "ArrowLeft") {
+        tilt = -15;
+        velocityX -= 3;
+        applyTilt();
+      } else if (e.key === "ArrowRight") {
+        tilt = 15;
+        velocityX += 3;
+        applyTilt();
+      }
+    });
+
+    function applyTilt() {
+      container.style.transform = `rotate(${tilt}deg)`;
+      setTimeout(() => {
+        container.style.transform = "rotate(0deg)";
+      }, 300);
+    }
+
+    // 讓搖晃區域可聚焦以接收鍵盤事件
+    shakeArea.focus();
+  </script>
+</body>
+</html>
