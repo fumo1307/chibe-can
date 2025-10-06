@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>吉比罐搖樂遊戲</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      text-align: center;
+      font-family: sans-serif;
+    }
+    .jam-wrapper {
+      position: relative;
+      width: 250px;
+      height: 300px;
+      margin: 50px auto;
+      background-image: url('./SAM_0714__67368.png'); /* 圖片 */
+      background-size: cover;
+      background-position: center;
+    }
+    .game-area {
+      position: absolute;
+      top: 50px;
+      left: 30px;
+      width: 200px;
+      height: 250px;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .ball {
+      width: 55px;
+      height: 55px;
+      background-image: url('./IMG_1928.png');
+      background-size: cover;
+      border-radius: 50%;
+      position: absolute;
+      left: 85px;
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>吉比罐搖搖樂</h2>
+  <div class="jam-wrapper">
+    <div class="game-area" id="gameArea">
+      <div class="ball" id="ball"></div>
+    </div>
+  </div>
+  <p>使用滑鼠拖曳或方向鍵控制搖晃</p>
+  <p>2025 Granyachibe All rights reserved.</p>
+  <a href="https://lit.link/zh-tw/Dtjip3E3vRXvbMhNCMTF41CveYn2">來看看可愛的吉比✨</a>
+  <p>Powered by Ncl.lab</p>
+  
+
+  <script>
+    const ball = document.getElementById("ball");
+    const gameArea = document.getElementById("gameArea");
+
+    let velocityY = 0;
+    let velocityX = 0;
+    let positionY = 0;
+    let positionX = 85;
+    let gravity = 0.5;
+    let bounce = -0.7;
+    let friction = 0.95;
+
+    let isDragging = false;
+    let startY = 0;
+    let startX = 0;
+
+    gameArea.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startX = e.clientX;
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const deltaY = e.clientY - startY;
+        const deltaX = e.clientX - startX;
+        startY = e.clientY;
+        startX = e.clientX;
+        velocityY += deltaY * 0.1;
+        velocityX += deltaX * 0.1;
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") velocityY -= 5;
+      if (e.key === "ArrowDown") velocityY += 5;
+      if (e.key === "ArrowLeft") velocityX -= 5;
+      if (e.key === "ArrowRight") velocityX += 5;
+    });
+
+    setInterval(() => {
+      velocityY += gravity;
+      velocityY *= friction;
+      velocityX *= friction;
+
+      positionY += velocityY;
+      positionX += velocityX;
+
+      if (positionY > 190) {
+        positionY = 190;
+        velocityY *= bounce;
+      } else if (positionY < 0) {
+        positionY = 0;
+        velocityY *= bounce;
+      }
+
+      if (positionX > 170) {
+        positionX = 170;
+        velocityX *= bounce;
+      } else if (positionX < 0) {
+        positionX = 0;
+        velocityX *= bounce;
+      }
+
+      ball.style.top = positionY + "px";
+      ball.style.left = positionX + "px";
+    }, 30);
+  </script>
+</body>
+</html>
