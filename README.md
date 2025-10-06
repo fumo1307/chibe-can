@@ -1,5 +1,5 @@
-# chibe-can
-吉比罐
+# chibe-can 吉比罐
+
 訂閱吉比：
 https://www.youtube.com/@granyachibe
 
