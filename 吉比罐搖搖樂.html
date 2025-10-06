@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>吉比罐搖搖樂</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #fff8f0;
+    }
+    .container {
+      width: 200px;
+      height: 250px;
+      margin: 50px auto;
+      position: relative;
+      overflow: hidden;
+      cursor: grab;
+      background-image: url('./SAM_0714__67368.png'); // 背景圖檔
+      background-size: fill;
+      background-position: center;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .ball {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      left: 80px;
+      top: 0;
+    }
+    .ball img {
+      width: 100%;
+      height: 100%;
+    }
+    p {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>吉比罐搖搖樂</h2>
+  <div class="container" id="container">
+    <div class="ball" id="ball">
+      <img src="./IMG_1928.png" alt="吉比"> <!--想搖的圖片-->
+    </div>
+  </div>
+  <p>用滑鼠上下拖動吉比罐來搖搖樂！</p>
+
+  <script>
+    const container = document.getElementById("container");
+    const ball = document.getElementById("ball");
+
+    let isDragging = false;
+    let startY = 0;
+    let velocity = 0;
+    let position = 0;
+    const gravity = 0.5;
+    const bounce = -0.7;
+
+    container.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      container.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      container.style.cursor = "grab";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const deltaY = e.clientY - startY;
+        startY = e.clientY;
+        velocity += deltaY * 0.1;
+      }
+    });
+
+    setInterval(() => {
+      velocity += gravity;
+      position += velocity;
+
+      if (position > 210) {
+        position = 210;
+        velocity *= bounce;
+      } else if (position < 0) {
+        position = 0;
+        velocity *= bounce;
+      }
+
+      ball.style.top = position + "px";
+    }, 30);
+  </script>
+</body>
+</html>
